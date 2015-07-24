@@ -1,0 +1,21 @@
+* Lein-droid "lein new" template
+
+  This small wrapper allows to create new lein-droid projects without having
+  lein-droid in the =:plugins= list in =profiles.clj=. It downloads the latest
+  version of lein-droid and passes the arguments to =lein droid new=. Once the
+  project is created, it will already have lein-droid in =:plugins=, so you
+  won't have to add that line manually neither in =project.clj=, nor in
+  =profiles.clj=.
+
+  Usage example:
+
+  : lein new droid my-app com.company.myapp :app-name MyApplication :target-sdk 18
+
+  It is equivalent to calling =lein droid new= with the same arguments.
+
+  You can also do =lein new droid :init=  as a substitute for =lein droid init=.
+
+* License
+
+  Copyright © 2015 Alexander Yakushev. Distributed under Eclipse Public License,
+  same as lein-droid, see [[https://github.com/clojure-android/lein-droid/blob/master/COPYING][COPYING]].
