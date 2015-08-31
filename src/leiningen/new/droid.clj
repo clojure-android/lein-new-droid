@@ -24,9 +24,9 @@
     (require 'leiningen.droid.utils)
     (require 'leiningen.droid.new)
     (if (= (first args) :init)
-      ((resolve 'leiningen.droid.new/init))
+      ((resolve 'leiningen.droid.new/init) "." version)
       (let [new-fn (resolve 'leiningen.droid.new/new)]
         (if (< (count args) 2)
           (main/abort ((resolve 'leiningen.droid.utils/wrong-usage)
                        "lein droid new" new-fn))
-          (apply new-fn args))))))
+          (apply new-fn :lein-droid-version version args))))))
