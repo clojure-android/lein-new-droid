@@ -6,10 +6,9 @@
 (defn pull-lein-droid
   "Downloads latest lein-droid plugin from Clojars, adds it to the classpath,
   returns its version."
-  [snapshot?]
+  [explicit-version]
   (->> (cp/get-dependencies
-        :dependencies {:dependencies [['lein-droid (if snapshot?
-                                                     "(0.0.0,)" "RELEASE")]]
+        :dependencies {:dependencies [['lein-droid (or explicit-version "RELEASE")]]
                        :repositories project/default-repositories}
         :add-classpath? true)
        keys
@@ -24,7 +23,7 @@
   (let [init? (= (first args) :init)
         options (when-not init?
                   (apply hash-map (drop 2 args)))
-        version (pull-lein-droid (get options ":use-snapshot"))]
+        version (pull-lein-droid (get options ":use-version"))]
     (main/info (str "Using lein-droid " version))
     (require 'leiningen.droid.utils)
     (require 'leiningen.droid.new)
