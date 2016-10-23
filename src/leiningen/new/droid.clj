@@ -7,13 +7,20 @@
   "Downloads latest lein-droid plugin from Clojars, adds it to the classpath,
   returns its version."
   [explicit-version]
-  (->> (cp/get-dependencies
-        :dependencies {:dependencies [['lein-droid (or explicit-version "RELEASE")]]
-                       :repositories project/default-repositories}
-        :add-classpath? true)
-       keys
-       (some #(when (= (first %) 'lein-droid) %))
-       second))
+  (let [deps-val {:dependencies [['lein-droid (or explicit-version "RELEASE")]]
+                  :repositories project/default-repositories}
+        resolved-dep (or (try (cp/get-dependencies :dependencies deps-val
+                                                   :add-classpath? true)
+                              (catch Exception _ nil))
+                         (try (cp/get-dependencies :dependencies :foo deps-val
+                                               :add-classpath? true)
+                              (catch Exception _ nil)))]
+    (when-not resolved-dep
+      (main/abort "Something wrong with Leiningen's get-dependency! Please file an issue."))
+   (->> resolved-dep
+        keys
+        (some #(when (= (first %) 'lein-droid) %))
+        second)))
 
 (defn droid
   "Creates a new Clojure-Android project using lein-droid. Usage: `lein new
